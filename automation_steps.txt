@@ -1,0 +1,158 @@
+================================================================================
+RO-EVISA AUTOMATION STEPS SPECIFICATION (FULL WORKFLOW)
+================================================================================
+
+[PRE-WIZARD SELECTIONS]
+- Types of visas depending on the purpose of your journey and stay (Employment D/AM)
+- Required Supporting Documents Preliminary Notice / Checklist
+- Select a Diplomatic Mission / Consular Post (Colombo / Sri Lanka)
+- Select Visa Type (Long-Stay Visa D-type)
+
+[AUTOMATION STEP 1: PARTICULAR SITUATIONS]
+Target: Particular Situations as Regards Certain Supporting Documents
+Action: Select "I do not find myself in any of the above-mentioned situations" (#radio_23)
+Navigation: trigger_next_only() (Next button)
+
+[AUTOMATION STEP 2: PERSONAL DATA OF APPLICANT]
+Target: Personal Data of the Applicant Form
+Inputs:
+  - #Nume = "PERERA"
+  - #Prenume = "ANUSHKA DILHANI"
+  - #Nume_este_NumeLaNastere = true
+  - #Fara_NumeAnterior = true
+  - #DataNastere_Day = "10"
+  - #DataNastere_Month = "3"
+  - #DataNastere_Year = "1997"
+  - #TaraNastere_Description = "Sri Lanka" (#TaraNastere_Id = 172)
+  - #LocNastere = "MARAWILA"
+  - #TaraRezidenta_Description = "Sri Lanka" (#TaraRezidenta_Id = 172)
+  - #LocRezidenta = "COLOMBO"
+  - #Cetatenie_Description = "Sri Lanka" (#Cetatenie_Id = 214)
+  - #CetatenieLaNastere_Description = "Sri Lanka" (#CetatenieLaNastere_Id = 214)
+  - #Sex_Description = "Female" (#Sex_Id = 2, radio #Sex_F)
+  - input[name='StareCivila.Id_input'] = "Married" (#StareCivila_Id = 2, radio #StareCivila_M)
+  - #Telefon = "+94 77 123 4567"
+  - #NumeTata = "PERERA"
+  - #PrenumeTata = "SUNIL"
+  - #NumeMama = "FERNANDO"
+  - #PrenumeMama = "KANTI"
+Navigation:
+  - #ContinuaLaSalvare = "True"
+  - trigger_save_and_next()
+
+[AUTOMATION STEP 3: TRAVEL DOCUMENT & OCCUPATION]
+Target: Travel Document and Current Occupation
+Inputs:
+  - #TipDocumentCalatorie = "Ordinary passport"
+  - #NumarPasaport = "N8234198"
+  - #TaraEliberare = "Sri Lanka"
+  - #AutoritateEliberare = "Colombo"
+  - #DataEliberarii = "15/05/2021"
+  - #DataExpirarii = "14/05/2031"
+  - #OcupatieActuala = "FACTORY HELPER"
+Navigation:
+  - #ContinuaLaSalvare = "True"
+  - trigger_save_and_next()
+
+[AUTOMATION STEP 4: DETAILS ABOUT VISA]
+Target: Details about the Visa (Visa requested)
+Inputs:
+  - Main destination: "ROMANIA"
+  - Purpose of journey: "Employment (marked D/AM)"
+  - Number of entries: 2 entries (radio checked)
+  - Duration of stay: 90 days
+Navigation:
+  - #ContinuaLaSalvare = "True"
+  - trigger_save_and_next()
+
+[AUTOMATION STEP 5: DETAILS REGARDING THE JOURNEY]
+Target: Details regarding the journey
+Execution Sequence:
+  Step 1: Date of arrival in Romania (Formula: CURRENT_DATE + 1_MONTH, Format: MM/DD/YYYY)
+          Selectors: #date_of_arrival, input[name='arrivalDate'], #DateCalatorie_DataPlanSosire
+  Step 2: Date of departure from Romania (Formula: ARRIVAL_DATE + 3_MONTHS, Format: MM/DD/YYYY)
+          Selectors: #date_of_departure, input[name='departureDate'], #DateCalatorie_DataPlanPlecare
+  Step 3: Member state of first entry (Search & Select Popup: "ROMANIA", ID: 119)
+          Selectors: #member_state_first_entry_dropdown, #TaraFrontiera_Description, #TaraFrontiera_Id
+  Step 4: Border post of entry into Romania (Value: "BUCURESTI")
+          Selectors: #border_post_entry, input[name='borderPost'], #DateCalatorie_LocalitateFrontiera
+  Step 5: Member state of main destination (Action: Skip / Leave default value untouched)
+  Step 6: Planned route (Value: "AIR TRAVEL")
+          Selectors: #planned_route, input[name='plannedRoute'], #DateCalatorie_RutaPlanificata
+  Step 7: Means of transport (Action: Skip / Leave empty)
+  Step 8: Company/contact person from Romania
+          - Company/Contact Name: #host_company_name, input[name='companyName'], #DateCalatorie_NumeFirma
+          - Telephone/fax number: #host_phone, input[name='companyPhone'], #DateCalatorie_NumarFirma
+          - Full address: #host_address, textarea[name='companyAddress'], #DateCalatorie_AdresaFirma
+          - Email address: #host_email, input[name='companyEmail'], #DateCalatorie_EmailFirma
+  Step 9: Cost of traveling and living covered by (Strict Order)
+          1. Click Host company radio: input[type='radio'][value='host_company'], #radio_host_company, input[name='Cheltuieli'][value='3']
+          2. Type Name of host person/company: #name_of_host_person_company, input[name='hostCoverName'], #DateCalatorie_NumePJ ("RETEX GREEN")
+  Step 10: Means of support during your stay
+          - Checkbox Cash: #chk_cash, input[name='means_cash'], #DateCalatorie_ModCash
+          - Checkbox Accommodation: #chk_accommodation, input[name='means_accommodation'], #DateCalatorie_ModCazare
+          - Checkbox Travel/health insurance: #chk_insurance, input[name='means_insurance'], #DateCalatorie_ModAsigurare
+          - Type Insurance policy expiring date: #insurance_expiring_date, input[name='insuranceExpiry'], #DateCalatorie_ValabilitateAsigurare ("02/02/2027", Format: MM/DD/YYYY)
+  Step 11: Form Submission (Save and Next)
+          - #ContinuaLaSalvare = "True"
+          - trigger_save_and_next()
+
+[AUTOMATION STEP 6: DETAILS ABOUT THE VISA APPLICANT'S FAMILY]
+Target: Details about the visa applicant's family
+Logic:
+  - If applicant is MARRIED:
+    - Spouse Surname: #DateFamilie_NumeSot
+    - Spouse First Name: #DateFamilie_PrenumeSot
+    - Spouse Surname at Birth: #DateFamilie_NumeNastereSot
+    - Spouse Date of Birth: Day, Month, Year
+    - Spouse Country of Birth: "Sri Lanka" (ID: 172)
+    - Spouse Place of Birth: "COLOMBO"
+  - If applicant is NOT MARRIED:
+    - Skips spouse fields.
+  - Form Submission: trigger_save_and_next()
+
+[AUTOMATION STEP 7: DETAILS REGARDING THE HOST (PERSON/HOTEL)]
+Target: Host Details Form (Details regarding the host)
+Execution Sequence:
+  Step 1: Type of host dropdown field
+          - Focus and type "HOTEL" into #TipGazda_Description
+          - Wait for pop-out list (#TipGazda_list) to appear
+          - Select "HOTEL" (Option ID: 2, #li_2)
+          - Dropdown updates hidden #TipGazda_Id = 2 and visible text "Hotel"
+  Step 2: Hotel name field
+          - Target: #GazdaSolicitant_NumeOrganizatie
+          - Fill with Company / Hotel Name (e.g., "RETEX GREEN S.R.L.")
+  Step 3: Host address field
+          - Target: #GazdaSolicitant_AdresaGazda
+          - Fill with Company / Hotel Address
+  Step 4: Form Submission
+          - #ContinuaLaSalvare = 'True'
+          - trigger_save_and_next()
+
+[AUTOMATION STEP 8: APPLICANT'S HOME ADDRESS]
+Target: Applicant's Home Address (Adresa de domiciliu a solicitantului)
+Inputs:
+  - Country of residence/domicile: #TaraDomiciliu_Description = "Sri Lanka" (ID: 172)
+  - Place / Town: #LocDomiciliu = "COLOMBO"
+  - Full Address: #AdresaDomiciliu = "NO. 45, TEMPLE ROAD, MARAWILA, SRI LANKA"
+  - Telephone: #TelefonDomiciliu = "+94 77 123 4567"
+  - Email: #EmailDomiciliu = "biyanthafernando123@gmail.com"
+Navigation:
+  - #ContinuaLaSalvare = "True"
+  - trigger_save_and_next()
+
+[AUTOMATION STEP 9: SUPPORTING DOCUMENTS & DECLARATION]
+Files Uploaded:
+  - Passport PDF
+  - Work Permit PDF
+  - Criminal Record PDF
+  - Medical Insurance PDF
+  - Proof of Means of Support PDF
+  - Photo PDF
+Check: Mandatory Declaration Checkbox ('I am aware of the supporting documents that are requested...')
+Final Action: Submit Visa Application / Save & Advance to Summary
+
+[AUTOMATION STEP 10: SUMMARY OF VISA APPLICATION]
+Target: Final Summary & Download
+Action: Download filled application summary and confirm completion
+================================================================================

@@ -1,0 +1,6 @@
+{
+  "name": "E-Visa Automation Pipeline Studio",
+  "description": "Scalable automated workflow engine, AI document extractor, and Python Selenium script generator for multi-stage visa application automation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-Visa Automation Pipeline Studio</title>
+    <meta name="description" content="Scalable automated workflow engine, AI document extractor, and Python Selenium script generator for multi-stage visa application automation." />
+    <meta property="og:title" content="E-Visa Automation Pipeline Studio" />
+    <meta property="og:description" content="Scalable automated workflow engine, AI document extractor, and Python Selenium script generator for multi-stage visa application automation." />
+    <script>
+      // Suppress benign WebSocket connection failure messages in proxy environments
+      window.addEventListener('error', function (e) {
+        if (e && e.message && (e.message.includes('WebSocket') || e.message.includes('websocket'))) {
+          e.stopImmediatePropagation();
+          e.preventDefault();
+        }
+      }, true);
+      window.addEventListener('unhandledrejection', function (e) {
+        if (e && e.reason && String(e.reason).includes('WebSocket')) {
+          e.preventDefault();
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

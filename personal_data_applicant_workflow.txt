@@ -1,0 +1,52 @@
+================================================================================
+RO-EVISA AUTOMATION STEP: PERSONAL DATA OF APPLICANT
+Applicant Name: PERERA ANUSHKA DILHANI
+File Number: E25110721257414
+================================================================================
+
+[STEP 6: PERSONAL DATA OF APPLICANT FORM AUTOMATION]
+
+1. NAMES & SURNAME FLAGS
+   - Surname (#Nume): Set value to "PERERA"
+   - First Names (#Prenume): Set value to "ANUSHKA DILHANI"
+   - Same Surname at Birth (#Nume_este_NumeLaNastere): Check / set true
+   - No Former Surname (#Fara_NumeAnterior): Check / set true
+
+2. DATE OF BIRTH
+   - Day (#DataNastere_Day): Select value "10"
+   - Month (#DataNastere_Month): Select value "3" (March)
+   - Year (#DataNastere_Year): Select value "1997"
+   - Fallback Datepicker (#DataNasterii): "10/03/1997"
+
+3. PLACE OF BIRTH AND RESIDENCY
+   - Country of Birth (#TaraNastere_Description): "Sri Lanka" (ID: 172)
+   - Place of Birth (#LocNastere): "MARAWILA"
+   - Country of Residence (#TaraRezidenta_Description): "Sri Lanka" (ID: 172)
+   - Place of Residence (#LocRezidenta): "COLOMBO"
+
+4. CITIZENSHIP AND GENDER/SEX
+   - Current Nationality (#Cetatenie_Description): "Sri Lanka" (ID: 214)
+   - Nationality at Birth (#CetatenieLaNastere_Description): "Sri Lanka" (ID: 214)
+   - Gender / Sex (#Sex_Description): "Female" (ID: 2, Radio #Sex_F)
+
+5. CIVIL STATUS & CONTACT
+   - Civil / Marital Status (input[name='StareCivila.Id_input']): "Married" (ID: 2, Radio #StareCivila_M)
+   - Phone Number (#Telefon): "+94 77 123 4567"
+
+6. PARENTS' INFORMATION
+   - Father's Surname (#NumeTata): "PERERA"
+   - Father's First Name (#PrenumeTata): "SUNIL"
+   - Mother's Surname (#NumeMama): "FERNANDO"
+   - Mother's First Name (#PrenumeMama): "KANTI"
+
+7. STEP NAVIGATION & FINALIZATION
+   - Set hidden flag `#ContinuaLaSalvare` to "True"
+   - Click Next Action Link `a.button.action:has-text('Next')`
+   - Wait for `networkidle` state to load Step 7 (Travel Document & Current Occupation)
+
+================================================================================
+AUTOMATION EXECUTABLE REFERENCE (PLAYWRIGHT PYTHON / JS):
+- Python Function: fill_sri_lankan_applicant(page)
+- Class Method: RomaniaVisaAutomator.page_personal_data()
+- JS Method: RomaniaVisaAutomator.pagePersonalData()
+================================================================================
